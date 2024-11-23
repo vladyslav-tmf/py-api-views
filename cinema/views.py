@@ -4,11 +4,12 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from cinema.models import Actor, CinemaHall, Genre
+from cinema.models import Actor, CinemaHall, Genre, Movie
 from cinema.serializers import (
     ActorSerializer,
     CinemaHallSerializer,
-    GenreSerializer
+    GenreSerializer,
+    MovieSerializer
 )
 
 
@@ -42,14 +43,13 @@ class GenreDetail(APIView):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    #  Possible, but pointless
-    # def patch(self, request: Request, pk: int) -> Response:
-    #   serializer = GenreSerializer(
-    #       self.get_object(pk=pk), data=request.data, partial=True
-    #   )
-    #   serializer.is_valid(raise_exception=True)
-    #   serializer.save()
-    #   return Response(serializer.data, status=status.HTTP_200_OK)
+    def patch(self, request: Request, pk: int) -> Response:
+      serializer = GenreSerializer(
+          self.get_object(pk=pk), data=request.data, partial=True
+      )
+      serializer.is_valid(raise_exception=True)
+      serializer.save()
+      return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request: Request, pk: int) -> Response:
         self.get_object(pk=pk).delete()
@@ -76,3 +76,8 @@ class CinemaHallViewSet(
 ):
     queryset = CinemaHall.objects.all()
     serializer_class = CinemaHallSerializer
+
+
+class MovieViewSet(viewsets.ModelViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
