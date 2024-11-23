@@ -3,9 +3,9 @@ from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from cinema.models import Genre
-from cinema.serializers import GenreSerializer
+from cinema.models import Actor, Genre
+from cinema.serializers import ActorSerializer, GenreSerializer
+from rest_framework import generics
 
 
 class GenreList(APIView):
@@ -51,3 +51,13 @@ class GenreDetail(APIView):
     def delete(self, request: Request, pk: int) -> Response:
         self.get_object(pk=pk).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ActorList(generics.ListCreateAPIView):
+    queryset = Actor.objects.all()
+    serializer_class = ActorSerializer
+
+
+class ActorDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Actor.objects.all()
+    serializer_class = ActorSerializer

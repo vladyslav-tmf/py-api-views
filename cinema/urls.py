@@ -10,4 +10,6 @@ urlpatterns = [
         "genres/<int:pk>/",
         views.GenreDetail.as_view(),
         name="genre-detail"),
+    path("actors/", views.ActorList.as_view(), name="actor-list"),
+    path("actors/<int:pk>/", views.ActorDetail.as_view(), name="actor-detail")
 ]
